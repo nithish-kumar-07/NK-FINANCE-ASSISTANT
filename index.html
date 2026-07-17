@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NK Finance Company</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+
+:root{
+--bg:#f1f5f9;
+--box:#fff;
+--text:#172033;
+--muted:#64748b;
+--blue:#2563eb;
+--nav:#172554
+}
+
+body{background:var(--bg);color:var(--text);transition:.3s}
+body.dark{--bg:#07111f;--box:#111c2e;--text:#f8fafc;--muted:#94a3b8;--nav:#020617}
+
+button{cursor:pointer}
+.app{display:none}
+
+.lock{
+position:fixed;inset:0;
+background:linear-gradient(135deg,#172554,#2563eb);
+display:flex;align-items:center;justify-content:center;
+z-index:9999
+}
+
+.lock-card{
+background:white;color:#172033;width:350px;
+padding:35px;border-radius:22px;text-align:center
+}
+
+input,select,textarea{
+width:100%;padding:11px;margin-top:6px;
+border:1px solid #cbd5e1;border-radius:9px;
+background:var(--box);color:var(--text)
+}
+
+.lock input{text-align:center;font-size:22px;margin:20px 0}
+
+.sidebar{
+position:fixed;width:250px;top:0;bottom:0;
+background:var(--nav);color:white;padding:20px;overflow:auto
+}
+
+.logo{font-size:22px;font-weight:bold;margin-bottom:25px}
+
+.menu button{
+width:100%;padding:13px;border:0;background:transparent;
+color:white;text-align:left;border-radius:9px;margin-bottom:5px
+}
+
+.menu button:hover{background:#2563eb}
+
+.main{margin-left:250px;padding:25px}
+
+.header,.box,.card,.member{
+background:var(--box);border-radius:15px;
+box-shadow:0 4px 15px rgba(0,0,0,.07)
+}
+
+.header{padding:18px;margin-bottom:20px}
+
+.banner{
+padding:28px;border-radius:18px;color:white;margin-bottom:20px;
+background:linear-gradient(135deg,#172554,#2563eb)
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.cards{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:15px;margin-bottom:20px
+}
+
+.card{padding:20px}
+.card small{color:var(--muted)}
+.card h2{margin-top:10px}
+
+.box{padding:20px;margin-bottom:20px}
+
+.form-grid{
+display:grid;grid-template-columns:repeat(3,1fr);gap:15px
+}
+
+label{font-size:13px;font-weight:bold}
+
+.btn{
+padding:10px 14px;border:0;border-radius:8px;margin:3px
+}
+
+.primary{background:#2563eb;color:white}
+.success{background:#16a34a;color:white}
+.warning{background:#f59e0b;color:white}
+.danger{background:#dc2626;color:white}
+.dark-btn{background:#172554;color:white}
+.whatsapp{background:#25d366;color:white}
+
+.members{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:15px;margin-top:15px
+}
+
+.member{padding:18px}
+
+.member-head{display:flex;align-items:center;gap:12px}
+
+.photo{
+width:65px;height:65px;border-radius:50%;
+object-fit:cover;background:#cbd5e1
+}
+
+.badge{
+padding:5px 9px;border-radius:20px;
+font-size:11px;font-weight:bold;display:inline-block
+}
+
+.paid{background:#dcfce7;color:#166534}
+.pending{background:#fee2e2;color:#991b1b}
+.partial{background:#fef3c7;color:#92400e}
+
+.progress{
+height:9px;background:#e2e8f0;border-radius:20px;
+overflow:hidden;margin:10px 0
+}
+
+.progress-bar{
+height:100%;background:linear-gradient(90deg,#2563eb,#16a34a)
+}
+
+table{width:100%;border-collapse:collapse;margin-top:15px}
+
+th,td{
+padding:11px;text-align:left;border-bottom:1px solid #cbd5e1
+}
+
+th{background:rgba(148,163,184,.12)}
+
+.reminder{
+padding:17px;border-radius:12px;margin:10px 0;
+background:var(--box);border-left:5px solid #dc2626
+}
+
+.today{border-left-color:#2563eb}
+.search{font-size:16px;padding:14px}
+
+.save{
+position:fixed;right:20px;bottom:20px;
+background:#172554;color:white;padding:11px 18px;
+border-radius:30px;opacity:0;transition:.3s;z-index:5000
+}
+
+.save.show{opacity:1}
+
+.activity{
+padding:13px;border-left:4px solid #2563eb;
+background:rgba(37,99,235,.07);
+margin:8px 0;border-radius:8px
+}
+
+.empty{text-align:center;padding:25px;color:var(--muted)}
+.bottom-nav{display:none}
+
+@media(max-width:900px){
+.sidebar{display:none}
+.main{margin-left:0;padding:15px;padding-bottom:90px}
+.cards,.members,.form-grid{grid-template-columns:1fr}
+
+.bottom-nav{
+display:flex;position:fixed;bottom:0;left:0;right:0;
+background:var(--box);justify-content:space-around;
+padding:10px;z-index:4000;box-shadow:0 -4px 15px #0002
+}
+
+.bottom-nav button{
+border:0;background:transparent;color:var(--text);
+font-size:21px;padding:8px
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="lock" id="lock">
+<div class="lock-card">
+<h1>💰 NK FINANCE</h1>
+<p>Secure Finance Manager</p>
+<input type="password" id="pinInput" placeholder="Enter PIN">
+<button class="btn primary" onclick="unlock()">🔐 UNLOCK</button>
+<p style="font-size:12px;margin-top:10px">Default PIN: 1234</p>
+</div>
+</div>
+
+<div class="save" id="saveStatus">💾 Saved Permanently</div>
+
+<div class="app" id="app">
+
+<div class="sidebar">
+<div class="logo">💰 NK FINANCE</div>
+
+<div class="menu">
+<button onclick="page('dashboard')">🏠 Dashboard</button>
+<button onclick="page('customers')">👥 Customers</button>
+<button onclick="newCustomer()">➕ Add Customer</button>
+<button onclick="page('moneyPage')">💵 Income & Outcome</button>
+<button onclick="page('transactions')">📒 Transactions</button>
+<button onclick="page('activityPage')">🕒 Activity History</button>
+<button onclick="page('settings')">⚙️ Settings</button>
+<button onclick="lockApp()">🔐 Lock</button>
+</div>
+</div>
+
+<div class="main">
+
+<div class="header">
+<h2>NK Finance Company</h2>
+<p>Professional Weekly Finance Management</p>
+</div>
+
+<div id="dashboard" class="page active">
+
+<div class="banner">
+<h1>💰 NK FINANCE COMPANY</h1>
+<p id="dateText"></p>
+</div>
+
+<div class="cards">
+<div class="card"><small>TOTAL CUSTOMERS</small><h2 id="customerCount">0</h2></div>
+<div class="card"><small>TOTAL MONEY GIVEN</small><h2 id="givenTotal">₹0</h2></div>
+<div class="card"><small>TODAY COLLECTION</small><h2 id="todayCollection">₹0</h2></div>
+<div class="card"><small>INTEREST COLLECTED</small><h2 id="profitTotal">₹0</h2></div>
+<div class="card"><small>CASH BALANCE</small><h2 id="cashBalance">₹0</h2></div>
+<div class="card"><small>TOTAL PENDING INTEREST</small><h2 id="pendingInterest">₹0</h2></div>
+</div>
+
+<div class="box">
+<h2>🔔 Today's Collection</h2>
+<div id="todayList"></div>
+</div>
+
+<div class="box">
+<h2>⚠️ Overdue Collection</h2>
+<div id="overdueList"></div>
+</div>
+
+</div>
+
+<div id="customers" class="page">
+<div class="box">
+<h2>👥 Customer Accounts</h2>
+<input class="search" id="search" placeholder="🔍 Search customer..." oninput="renderCustomers()">
+<div class="members" id="customerList"></div>
+</div>
+</div>
+
+<div id="customerForm" class="page">
+<div class="box">
+
+<h2 id="formTitle">➕ Add Customer</h2>
+<input type="hidden" id="editId">
+
+<div class="form-grid">
+
+<div>
+<label>Customer Name *</label>
+<input id="customerName">
+</div>
+
+<div>
+<label>Mobile Number</label>
+<input id="mobile" type="tel" placeholder="9876543210">
+</div>
+
+<div>
+<label>Address</label>
+<input id="address">
+</div>
+
+<div>
+<label>ID Proof Number</label>
+<input id="proof">
+</div>
+
+<div>
+<label>Total Money Given ₹ *</label>
+<input type="number" id="amount">
+</div>
+
+<div>
+<label>Weekly Interest ₹ *</label>
+<input type="number" id="interest">
+</div>
+
+<div>
+<label>Money Given Date *</label>
+<input type="date" id="loanDate">
+</div>
+
+<div>
+<label>Total Weeks *</label>
+<input type="number" id="weeks" value="10">
+</div>
+
+<div>
+<label>Customer Photo Optional</label>
+<input type="file" id="photo" accept="image/*">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn primary" onclick="saveCustomer()">💾 SAVE DETAILS</button>
+<button class="btn dark-btn" onclick="clearForm()">CLEAR</button>
+<button class="btn warning" onclick="page('customers')">⬅ BACK</button>
+
+</div>
+</div>
+
+<div id="personPage" class="page">
+
+<div class="box" id="personInfo"></div>
+
+<div class="box">
+<h2>💵 Add Weekly Collection</h2>
+
+<div class="form-grid">
+
+<div>
+<label>Week</label>
+<select id="payWeek"></select>
+</div>
+
+<div>
+<label>Amount Received ₹</label>
+<input type="number" id="payAmount">
+</div>
+
+<div>
+<label>Collection Date</label>
+<input type="date" id="payDate">
+</div>
+
+<div>
+<label>Payment Note</label>
+<input id="payNote">
+</div>
+
+<div>
+<label>Collector Name</label>
+<input id="collector">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn success" onclick="addPayment()">✅ SAVE COLLECTION</button>
+</div>
+
+<div class="box">
+<h2>📅 Weekly Due Details</h2>
+
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Due Date</th>
+<th>Interest</th>
+<th>Collected</th>
+<th>Pending</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="dueTable"></tbody>
+</table>
+</div>
+</div>
+
+<div class="box">
+<h2>📒 Payment History</h2>
+
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Week</th>
+<th>Amount</th>
+<th>Note</th>
+<th>Collector</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="paymentHistory"></tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div id="moneyPage" class="page">
+
+<div class="box">
+<h2>💵 Daily Income & Outcome</h2>
+
+<div class="form-grid">
+
+<div>
+<label>Type</label>
+<select id="transType">
+<option value="income">Income</option>
+<option value="outcome">Outcome</option>
+</select>
+</div>
+
+<div>
+<label>Amount ₹</label>
+<input type="number" id="transAmount">
+</div>
+
+<div>
+<label>Date</label>
+<input type="date" id="transDate">
+</div>
+
+<div>
+<label>Description</label>
+<input id="transDescription">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn primary" onclick="addTransaction()">💾 SAVE TRANSACTION</button>
+
+</div>
+</div>
+
+<div id="transactions" class="page">
+<div class="box">
+
+<h2>📒 All Transactions</h2>
+
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Type</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="transactionTable"></tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<div id="activityPage" class="page">
+<div class="box">
+<h2>🕒 Activity History</h2>
+<div id="activityList"></div>
+</div>
+</div>
+
+<div id="settings" class="page">
+
+<div class="box">
+<h2>⚙️ Company Settings</h2>
+<br>
+
+<button class="btn dark-btn" onclick="toggleDark()">🌙 Dark / Light Mode</button>
+<button class="btn primary" onclick="backup()">📤 Backup Data</button>
+
+<label class="btn warning">
+📥 Restore Data
+<input type="file" hidden onchange="restoreData(event)">
+</label>
+
+</div>
+
+<div class="box">
+<h2>🔐 Change PIN</h2>
+
+<div class="form-grid">
+<div>
+<label>Current PIN</label>
+<input type="password" id="oldPin">
+</div>
+
+<div>
+<label>New PIN</label>
+<input type="password" id="newPin">
+</div>
+</div>
+
+<br>
+
+<button class="btn primary" onclick="changePin()">CHANGE PIN</button>
+
+</div>
+</div>
+
+</div>
+
+<div class="bottom-nav">
+<button onclick="page('dashboard')">🏠</button>
+<button onclick="page('customers')">👥</button>
+<button onclick="newCustomer()">➕</button>
+<button onclick="page('moneyPage')">💵</button>
+<button onclick="page('transactions')">📒</button>
+<button onclick="page('settings')">⚙️</button>
+</div>
+
+</div>
+
+<script>
+"use strict";
+
+let db;
+let people=[];
+let financeTransactions=[];
+let activities=[];
+let selectedPerson=null;
+let appPin="1234";
+
+const el=id=>document.getElementById(id);
+const DB_NAME="NKFinanceOriginalDB";
+
+function money(n){
+return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
+}
+
+function today(){
+const d=new Date();
+return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function formatDate(date){
+if(!date)return "-";
+return new Date(date+"T00:00:00").toLocaleDateString("en-IN",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
+}
+
+function openDB(){
+return new Promise((resolve,reject)=>{
+const request=indexedDB.open(DB_NAME,1);
+
+request.onupgradeneeded=e=>{
+db=e.target.result;
+if(!db.objectStoreNames.contains("data")){
+db.createObjectStore("data",{keyPath:"key"});
+}
+};
+
+request.onsuccess=e=>{
+db=e.target.result;
+resolve();
+};
+
+request.onerror=()=>reject(request.error);
+});
+}
+
+function getDB(key){
+return new Promise(resolve=>{
+const request=db.transaction("data","readonly").objectStore("data").get(key);
+request.onsuccess=()=>resolve(request.result?request.result.value:null);
+});
+}
+
+function putDB(key,value){
+return new Promise(resolve=>{
+const transaction=db.transaction("data","readwrite");
+transaction.objectStore("data").put({key,value});
+transaction.oncomplete=resolve;
+});
+}
+
+async function load(){
+await openDB();
+
+people=await getDB("people")||[];
+financeTransactions=await getDB("transactions")||[];
+activities=await getDB("activities")||[];
+appPin=await getDB("pin")||"1234";
+
+const dark=await getDB("dark");
+
+if(dark){
+document.body.classList.add("dark");
+}
+
+render();
+}
+
+async function save(message="Details saved"){
+await putDB("people",people);
+await putDB("transactions",financeTransactions);
+await putDB("activities",activities);
+await putDB("pin",appPin);
+
+render();
+
+el("saveStatus").innerText="💾 "+message;
+el("saveStatus").classList.add("show");
+
+setTimeout(()=>{
+el("saveStatus").classList.remove("show");
+},1400);
+}
+
+function activity(text){
+activities.unshift({
+id:Date.now(),
+date:new Date().toLocaleString("en-IN"),
+text
+});
+
+if(activities.length>500){
+activities.pop();
+}
+}
+
+function page(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+const target=el(id);
+
+if(target){
+target.classList.add("active");
+}
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function unlock(){
+if(el("pinInput").value===appPin){
+el("lock").style.display="none";
+el("app").style.display="block";
+el("pinInput").value="";
+page("dashboard");
+render();
+}else{
+alert("❌ Wrong PIN");
+}
+}
+
+function lockApp(){
+el("app").style.display="none";
+el("lock").style.display="flex";
+el("pinInput").value="";
+}
+
+function customerID(){
+return "NK"+String(Date.now()).slice(-7);
+}
+
+function newCustomer(){
+clearForm();
+page("customerForm");
+}
+
+function clearForm(){
+el("editId").value="";
+el("customerName").value="";
+el("mobile").value="";
+el("address").value="";
+el("proof").value="";
+el("amount").value="";
+el("interest").value="";
+el("loanDate").value=today();
+el("weeks").value=10;
+el("photo").value="";
+el("formTitle").innerText="➕ Add Customer";
+}
+
+function saveCustomer(){
+const id=Number(el("editId").value);
+const name=el("customerName").value.trim();
+const amount=Number(el("amount").value);
+const interest=Number(el("interest").value);
+const weeks=Number(el("weeks").value);
+const loanDate=el("loanDate").value;
+
+if(!name||amount<=0||interest<=0||!loanDate||weeks<=0){
+alert("Please fill all required details");
+return;
+}
+
+const file=el("photo").files[0];
+
+async function finish(photoData){
+
+if(id){
+
+const person=people.find(x=>x.id===id);
+if(!person)return;
+
+person.name=name;
+person.mobile=el("mobile").value;
+person.address=el("address").value;
+person.proof=el("proof").value;
+person.amount=amount;
+person.interest=interest;
+person.loanDate=loanDate;
+person.weeks=weeks;
+
+if(photoData){
+person.photo=photoData;
+}
+
+const loanTransaction=financeTransactions.find(x=>x.loanCustomerId===person.id);
+
+if(loanTransaction){
+loanTransaction.amount=amount;
+loanTransaction.date=loanDate;
+loanTransaction.description="Money given to "+person.name;
+}
+
+activity("Customer details updated: "+person.name);
+
+}else{
+
+const personId=Date.now();
+
+const person={
+id:personId,
+customerId:customerID(),
+name,
+mobile:el("mobile").value,
+address:el("address").value,
+proof:el("proof").value,
+amount,
+interest,
+loanDate,
+weeks,
+photo:photoData||"",
+payments:[]
+};
+
+people.push(person);
+
+financeTransactions.push({
+id:Date.now()+1,
+date:person.loanDate,
+type:"outcome",
+description:"Money given to "+person.name,
+amount:person.amount,
+loanCustomerId:person.id
+});
+
+activity("New customer added: "+person.name+" - "+money(person.amount));
+}
+
+await save("Customer saved permanently");
+
+clearForm();
+page("customers");
+}
+
+if(file){
+const reader=new FileReader();
+reader.onload=e=>finish(e.target.result);
+reader.readAsDataURL(file);
+}else{
+finish("");
+}
+}
+
+function editPerson(id){
+const p=people.find(x=>x.id===id);
+if(!p)return;
+
+el("editId").value=p.id;
+el("customerName").value=p.name;
+el("mobile").value=p.mobile||"";
+el("address").value=p.address||"";
+el("proof").value=p.proof||"";
+el("amount").value=p.amount;
+el("interest").value=p.interest;
+el("loanDate").value=p.loanDate;
+el("weeks").value=p.weeks;
+el("formTitle").innerText="✏️ Edit Customer Details";
+
+page("customerForm");
+}
+
+function dueDate(person,week){
+const d=new Date(person.loanDate+"T00:00:00");
+d.setDate(d.getDate()+week*7);
+
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
+}
+
+function paid(person,week){
+return (person.payments||[])
+.filter(p=>Number(p.week)===week)
+.reduce((t,p)=>t+Number(p.amount),0);
+}
+
+function totalCollected(person){
+return (person.payments||[])
+.reduce((t,p)=>t+Number(p.amount||0),0);
+}
+
+function customerPending(person){
+const expected=Number(person.interest)*Number(person.weeks);
+return Math.max(expected-totalCollected(person),0);
+}
+
+function renderCustomers(){
+const searchBox=el("search");
+
+const query=searchBox?(searchBox.value||"").toLowerCase():"";
+const list=el("customerList");
+
+list.innerHTML="";
+
+const filtered=people.filter(p=>
+p.name.toLowerCase().includes(query)||
+(p.mobile||"").includes(query)||
+(p.customerId||"").toLowerCase().includes(query)
+);
+
+if(!filtered.length){
+list.innerHTML='<div class="empty">No customers found</div>';
+return;
+}
+
+filtered.forEach(person=>{
+
+const collected=totalCollected(person);
+const expected=person.interest*person.weeks;
+const progress=Math.min((collected/expected)*100,100)||0;
+
+let nextDue="-";
+
+for(let week=1;week<=person.weeks;week++){
+if(paid(person,week)<person.interest){
+nextDue=formatDate(dueDate(person,week));
+break;
+}
+}
+
+list.innerHTML+=`
+<div class="member">
+
+<div class="member-head">
+
+${
+person.photo
+?`<img class="photo" src="${person.photo}">`
+:`<div class="photo"></div>`
+}
+
+<div>
+<h3>${person.name}</h3>
+<small>${person.customerId||"-"}</small>
+<p>${person.mobile||"No mobile"}</p>
+</div>
+
+</div>
+
+<br>
+
+<p>💵 Given: <b>${money(person.amount)}</b></p>
+<p>💰 Weekly Interest: <b>${money(person.interest)}</b></p>
+<p>📅 Next Due: <b>${nextDue}</b></p>
+<p>⚠️ Pending Interest: <b>${money(customerPending(person))}</b></p>
+
+<div class="progress">
+<div class="progress-bar" style="width:${progress}%"></div>
+</div>
+
+<small>${progress.toFixed(0)}% Collection Progress</small>
+
+<br><br>
+
+<button class="btn primary" onclick="openPerson(${person.id})">👤 OPEN</button>
+<button class="btn whatsapp" onclick="sendWhatsApp(${person.id})">💬 WHATSAPP</button>
+<button class="btn warning" onclick="editPerson(${person.id})">✏️ EDIT</button>
+<button class="btn danger" onclick="deletePerson(${person.id})">🗑️ DELETE</button>
+
+</div>
+`;
+});
+}
+
+async function deletePerson(id){
+const person=people.find(x=>x.id===id);
+if(!person)return;
+
+if(!confirm("Delete "+person.name+"?"))return;
+
+people=people.filter(x=>x.id!==id);
+
+financeTransactions=financeTransactions.filter(
+x=>x.loanCustomerId!==id&&x.paymentCustomerId!==id
+);
+
+activity("Customer deleted: "+person.name);
+
+await save("Customer deleted");
+}
+
+function openPerson(id){
+selectedPerson=id;
+
+const p=people.find(x=>x.id===id);
+if(!p)return;
+
+page("personPage");
+
+el("personInfo").innerHTML=`
+<h2>👤 ${p.name}</h2>
+<br>
+
+<p><b>Customer ID:</b> ${p.customerId||"-"}</p>
+<p><b>Mobile:</b> ${p.mobile||"-"}</p>
+<p><b>Address:</b> ${p.address||"-"}</p>
+<p><b>ID Proof:</b> ${p.proof||"-"}</p>
+<p><b>Money Given:</b> ${money(p.amount)}</p>
+<p><b>Given Date:</b> ${formatDate(p.loanDate)}</p>
+<p><b>Weekly Interest:</b> ${money(p.interest)}</p>
+<p><b>Total Weeks:</b> ${p.weeks}</p>
+<p><b>Total Interest:</b> ${money(p.interest*p.weeks)}</p>
+<p><b>Interest Collected:</b> ${money(totalCollected(p))}</p>
+<p><b>Interest Pending:</b> ${money(customerPending(p))}</p>
+
+<br>
+
+<button class="btn warning" onclick="editPerson(${p.id})">✏️ EDIT</button>
+<button class="btn whatsapp" onclick="sendWhatsApp(${p.id})">💬 WHATSAPP</button>
+<button class="btn dark-btn" onclick="receipt(${p.id})">🧾 RECEIPT</button>
+`;
+
+el("payWeek").innerHTML="";
+
+for(let week=1;week<=p.weeks;week++){
+el("payWeek").innerHTML+=`
+<option value="${week}">
+Week ${week} - ${formatDate(dueDate(p,week))}
+</option>
+`;
+}
+
+el("payDate").value=today();
+
+renderDue();
+renderPayments();
+}
+
+async function addPayment(){
+const p=people.find(x=>x.id===selectedPerson);
+if(!p)return;
+
+const week=Number(el("payWeek").value);
+const amount=Number(el("payAmount").value);
+
+const balance=Math.max(p.interest-paid(p,week),0);
+
+if(amount<=0||amount>balance){
+alert("Maximum pending amount: "+money(balance));
+return;
+}
+
+const paymentId=Date.now();
+
+p.payments=p.payments||[];
+
+p.payments.push({
+id:paymentId,
+week,
+amount,
+date:el("payDate").value||today(),
+note:el("payNote").value,
+collector:el("collector").value
+});
+
+financeTransactions.push({
+id:Date.now()+1,
+date:el("payDate").value||today(),
+type:"income",
+description:p.name+" Week "+week+" Interest",
+amount,
+paymentCustomerId:p.id,
+paymentId
+});
+
+activity("Collected "+money(amount)+" from "+p.name+" - Week "+week);
+
+el("payAmount").value="";
+el("payNote").value="";
+
+await save("Collection saved");
+
+openPerson(p.id);
+}
+
+function renderDue(){
+const p=people.find(x=>x.id===selectedPerson);
+if(!p)return;
+
+el("dueTable").innerHTML="";
+
+for(let week=1;week<=p.weeks;week++){
+
+const collected=paid(p,week);
+const balance=Math.max(p.interest-collected,0);
+
+const status=
+collected>=p.interest
+?"PAID"
+:collected>0
+?"PARTIAL"
+:"PENDING";
+
+el("dueTable").innerHTML+=`
+<tr>
+<td>Week ${week}</td>
+<td>${formatDate(dueDate(p,week))}</td>
+<td>${money(p.interest)}</td>
+<td>${money(collected)}</td>
+<td>${money(balance)}</td>
+<td><span class="badge ${status.toLowerCase()}">${status}</span></td>
+</tr>
+`;
+}
+}
+
+function renderPayments(){
+const p=people.find(x=>x.id===selectedPerson);
+if(!p)return;
+
+el("paymentHistory").innerHTML="";
+
+if(!(p.payments||[]).length){
+el("paymentHistory").innerHTML='<tr><td colspan="6" class="empty">No payments</td></tr>';
+return;
+}
+
+p.payments.slice().reverse().forEach(payment=>{
+
+el("paymentHistory").innerHTML+=`
+<tr>
+<td>${formatDate(payment.date)}</td>
+<td>Week ${payment.week}</td>
+<td>${money(payment.amount)}</td>
+<td>${payment.note||"-"}</td>
+<td>${payment.collector||"-"}</td>
+<td>
+<button class="btn danger" onclick="deletePayment(${payment.id})">🗑️ DELETE</button>
+</td>
+</tr>
+`;
+});
+}
+
+async function deletePayment(id){
+const p=people.find(x=>x.id===selectedPerson);
+if(!p)return;
+
+if(!confirm("Delete payment?"))return;
+
+p.payments=p.payments.filter(x=>x.id!==id);
+
+financeTransactions=financeTransactions.filter(x=>x.paymentId!==id);
+
+activity("Payment deleted from "+p.name);
+
+await save("Payment deleted");
+
+openPerson(p.id);
+}
+
+function reminders(){
+const current=today();
+const todayArray=[];
+const overdueArray=[];
+
+people.forEach(person=>{
+
+for(let week=1;week<=person.weeks;week++){
+
+const balance=Math.max(person.interest-paid(person,week),0);
+
+if(!balance)continue;
+
+const date=dueDate(person,week);
+
+const days=Math.floor(
+(
+new Date(current+"T00:00:00")-
+new Date(date+"T00:00:00")
+)/86400000
+);
+
+const item={person,week,balance,date,days};
+
+if(date===current){
+todayArray.push(item);
+}else if(date<current){
+overdueArray.push(item);
+}
+
+}
+});
+
+return{todayArray,overdueArray};
+}
+
+function reminderHTML(item,isToday){
+return `
+<div class="reminder ${isToday?"today":""}">
+
+<h3>👤 ${item.person.name}</h3>
+
+<p>Week ${item.week} • Due ${formatDate(item.date)}</p>
+
+${!isToday?`<p>⚠️ ${item.days} day(s) overdue</p>`:""}
+
+<h3>${money(item.balance)} Pending</h3>
+
+<br>
+
+<button class="btn success" onclick="quickPaid(${item.person.id},${item.week})">✅ PAID</button>
+
+<button class="btn warning" onclick="partialPayment(${item.person.id},${item.week})">🟡 PARTIAL</button>
+
+<button class="btn whatsapp" onclick="sendWhatsApp(${item.person.id},${item.week})">💬 REMINDER</button>
+
+</div>
+`;
+}
+
+async function quickPaid(id,week){
+const p=people.find(x=>x.id===id);
+if(!p)return;
+
+const amount=Math.max(p.interest-paid(p,week),0);
+
+if(!confirm("Collected "+money(amount)+" from "+p.name+"?"))return;
+
+const paymentId=Date.now();
+
+p.payments=p.payments||[];
+
+p.payments.push({
+id:paymentId,
+week,
+amount,
+date:today(),
+note:"Full Payment",
+collector:""
+});
+
+financeTransactions.push({
+id:Date.now()+1,
+date:today(),
+type:"income",
+description:p.name+" Week "+week+" Interest",
+amount,
+paymentCustomerId:p.id,
+paymentId
+});
+
+activity("Full payment "+money(amount)+" collected from "+p.name);
+
+await save("Payment marked PAID");
+}
+
+function partialPayment(id,week){
+openPerson(id);
+el("payWeek").value=week;
+el("payAmount").focus();
+}
+
+/* IMPROVED WHATSAPP */
+
+async function sendWhatsApp(id,week){
+
+const p=people.find(x=>x.id===id);
+
+if(!p){
+alert("❌ Customer not found");
+return;
+}
+
+if(!p.mobile){
+alert("❌ Mobile number not available for "+p.name);
+return;
+}
+
+if(!week){
+
+for(let w=1;w<=Number(p.weeks);w++){
+
+if(paid(p,w)<Number(p.interest)){
+week=w;
+break;
+}
+
+}
+
+}
+
+if(!week){
+alert("✅ No pending payment for "+p.name);
+return;
+}
+
+const balance=Math.max(
+Number(p.interest)-paid(p,week),
+0
+);
+
+if(balance<=0){
+alert("✅ Week "+week+" payment already completed");
+return;
+}
+
+const due=formatDate(dueDate(p,week));
+const collected=paid(p,week);
+const totalPending=customerPending(p);
+
+const message=
+`💰 *NK FINANCE COMPANY*
+
+Hello *${p.name}* 👋
+
+🔔 *WEEKLY PAYMENT REMINDER*
+
+This is a reminder regarding your weekly finance payment.
+
+👤 *CUSTOMER DETAILS*
+
+Customer ID: ${p.customerId||"-"}
+Customer Name: ${p.name}
+
+📅 *PAYMENT DETAILS*
+
+Week: ${week}
+Due Date: ${due}
+
+Weekly Interest: ${money(p.interest)}
+Already Collected: ${money(collected)}
+
+⚠️ *CURRENT PENDING*
+${money(balance)}
+
+💰 Total Pending Interest:
+${money(totalPending)}
+
+Please make your payment on time.
+
+If you have already completed the payment, please ignore this reminder.
+
+Thank you 🙏
+
+*NK FINANCE COMPANY*
+💰 Professional Weekly Finance Management`;
+
+let number=String(p.mobile).replace(/\D/g,"");
+
+if(number.startsWith("0")&&number.length===11){
+number=number.substring(1);
+}
+
+if(number.length===10){
+number="91"+number;
+}
+
+if(number.length<10){
+alert("❌ Invalid mobile number: "+p.mobile);
+return;
+}
+
+const whatsappURL=
+"https://wa.me/"+
+number+
+"?text="+
+encodeURIComponent(message);
+
+activity(
+"WhatsApp reminder opened for "+
+p.name+
+" - Week "+
+week+
+" - Pending "+
+money(balance)
+);
+
+await save("WhatsApp reminder opened");
+
+const whatsappWindow=window.open(whatsappURL,"_blank");
+
+if(!whatsappWindow){
+window.location.href=whatsappURL;
+}
+}
+
+async function addTransaction(){
+const amount=Number(el("transAmount").value);
+
+if(amount<=0||!el("transDate").value){
+alert("Enter transaction details");
+return;
+}
+
+financeTransactions.push({
+id:Date.now(),
+type:el("transType").value,
+amount,
+date:el("transDate").value,
+description:el("transDescription").value||"Manual Transaction"
+});
+
+activity(
+el("transType").value.toUpperCase()+
+" transaction "+
+money(amount)+
+" added"
+);
+
+el("transAmount").value="";
+el("transDescription").value="";
+
+await save("Transaction saved");
+}
+
+async function deleteTransaction(id){
+if(!confirm("Delete transaction?"))return;
+
+financeTransactions=financeTransactions.filter(x=>x.id!==id);
+
+activity("Manual transaction deleted");
+
+await save("Transaction deleted");
+}
+
+function renderTransactions(){
+el("transactionTable").innerHTML="";
+
+if(!financeTransactions.length){
+el("transactionTable").innerHTML='<tr><td colspan="5" class="empty">No transactions</td></tr>';
+return;
+}
+
+financeTransactions.slice().reverse().forEach(t=>{
+
+el("transactionTable").innerHTML+=`
+<tr>
+
+<td>${formatDate(t.date)}</td>
+
+<td>
+<span class="badge ${t.type==="income"?"paid":"pending"}">
+${t.type.toUpperCase()}
+</span>
+</td>
+
+<td>${t.description}</td>
+<td>${money(t.amount)}</td>
+
+<td>
+${
+!t.loanCustomerId&&!t.paymentId
+?`
+<button class="btn danger" onclick="deleteTransaction(${t.id})">
+🗑️ DELETE
+</button>
+`
+:"AUTO"
+}
+</td>
+
+</tr>
+`;
+});
+}
+
+function renderActivity(){
+el("activityList").innerHTML=
+activities.length
+?""
+:'<div class="empty">No activity</div>';
+
+activities.forEach(item=>{
+
+el("activityList").innerHTML+=`
+<div class="activity">
+<b>${item.text}</b>
+<br>
+<small>${item.date}</small>
+</div>
+`;
+
+});
+}
+
+function dashboard(){
+const reminderData=reminders();
+
+const given=people.reduce((t,p)=>t+Number(p.amount),0);
+
+const profit=people.reduce(
+(total,p)=>total+totalCollected(p),
+0
+);
+
+const pending=people.reduce(
+(total,p)=>total+customerPending(p),
+0
+);
+
+const todayMoney=financeTransactions
+.filter(t=>t.type==="income"&&t.date===today())
+.reduce((x,y)=>x+Number(y.amount),0);
+
+const income=financeTransactions
+.filter(t=>t.type==="income")
+.reduce((x,y)=>x+Number(y.amount),0);
+
+const outcome=financeTransactions
+.filter(t=>t.type==="outcome")
+.reduce((x,y)=>x+Number(y.amount),0);
+
+el("customerCount").innerText=people.length;
+el("givenTotal").innerText=money(given);
+el("todayCollection").innerText=money(todayMoney);
+el("profitTotal").innerText=money(profit);
+el("cashBalance").innerText=money(income-outcome);
+el("pendingInterest").innerText=money(pending);
+
+el("todayList").innerHTML=
+reminderData.todayArray.length
+?reminderData.todayArray.map(x=>reminderHTML(x,true)).join("")
+:'<div class="empty">✅ No collection due today</div>';
+
+el("overdueList").innerHTML=
+reminderData.overdueArray.length
+?reminderData.overdueArray.map(x=>reminderHTML(x,false)).join("")
+:'<div class="empty">✅ No overdue collection</div>';
+}
+
+function receipt(id){
+const p=people.find(x=>x.id===id);
+if(!p)return;
+
+const collected=totalCollected(p);
+const pending=customerPending(p);
+
+const w=window.open("","_blank");
+
+w.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<title>NK Finance Receipt</title>
+
+<style>
+body{font-family:Arial;padding:40px}
+.receipt{max-width:500px;margin:auto;border:2px solid #222;padding:30px}
+h1,h2{text-align:center}
+p{font-size:16px;padding:5px}
+</style>
+
+</head>
+
+<body>
+
+<div class="receipt">
+
+<h1>NK FINANCE COMPANY</h1>
+
+<hr>
+
+<h2>Customer Finance Receipt</h2>
+
+<p><b>Customer ID:</b> ${p.customerId}</p>
+<p><b>Name:</b> ${p.name}</p>
+<p><b>Mobile:</b> ${p.mobile||"-"}</p>
+<p><b>Money Given:</b> ${money(p.amount)}</p>
+<p><b>Weekly Interest:</b> ${money(p.interest)}</p>
+<p><b>Total Weeks:</b> ${p.weeks}</p>
+<p><b>Total Interest:</b> ${money(p.interest*p.weeks)}</p>
+<p><b>Interest Collected:</b> ${money(collected)}</p>
+<p><b>Interest Pending:</b> ${money(pending)}</p>
+<p><b>Receipt Date:</b> ${formatDate(today())}</p>
+
+<hr>
+
+<h3 style="text-align:center">NK FINANCE COMPANY</h3>
+
+</div>
+
+<script>
+window.onload=function(){
+window.print();
+}
+<\/script>
+
+</body>
+</html>
+`);
+
+w.document.close();
+}
+
+async function toggleDark(){
+document.body.classList.toggle("dark");
+
+await putDB(
+"dark",
+document.body.classList.contains("dark")
+);
+}
+
+async function changePin(){
+if(el("oldPin").value!==appPin){
+alert("Current PIN is wrong");
+return;
+}
+
+if(el("newPin").value.length<4){
+alert("New PIN minimum 4 digits");
+return;
+}
+
+appPin=el("newPin").value;
+
+activity("App PIN changed");
+
+el("oldPin").value="";
+el("newPin").value="";
+
+await save("PIN changed");
+
+alert("PIN changed successfully");
+}
+
+function backup(){
+const data={
+people,
+transactions:financeTransactions,
+activities,
+pin:appPin,
+backupDate:new Date().toISOString()
+};
+
+const blob=new Blob(
+[JSON.stringify(data,null,2)],
+{type:"application/json"}
+);
+
+const link=document.createElement("a");
+
+link.href=URL.createObjectURL(blob);
+link.download="NK_FINANCE_BACKUP_"+today()+".json";
+
+link.click();
+
+URL.revokeObjectURL(link.href);
+
+activity("Finance backup created");
+
+save("Backup created");
+}
+
+function restoreData(event){
+const file=event.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=async e=>{
+
+try{
+
+const data=JSON.parse(e.target.result);
+
+if(!confirm("Restore backup data?"))return;
+
+people=data.people||[];
+financeTransactions=data.transactions||[];
+activities=data.activities||[];
+
+if(data.pin){
+appPin=data.pin;
+}
+
+activity("Finance backup restored");
+
+await save("Backup restored");
+
+alert("Data restored successfully");
+
+}catch(error){
+
+alert("Invalid backup file");
+
+}
+
+};
+
+reader.readAsText(file);
+}
+
+function render(){
+dashboard();
+renderCustomers();
+renderTransactions();
+renderActivity();
+
+if(selectedPerson&&people.find(x=>x.id===selectedPerson)){
+renderDue();
+renderPayments();
+}
+}
+
+el("dateText").innerText=
+new Date().toLocaleDateString("en-IN",{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+el("loanDate").value=today();
+el("payDate").value=today();
+el("transDate").value=today();
+
+el("pinInput").addEventListener("keydown",event=>{
+if(event.key==="Enter"){
+unlock();
+}
+});
+
+load();
+</script>
+
+</body>
+</html>
